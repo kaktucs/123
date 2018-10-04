@@ -20,6 +20,8 @@ void tiker_interrupt(){
         digitalWrite(27, 1);
         timer2.start();
         timer1.stop();
+        //гавно ёбаное
+
     }
 
 }
