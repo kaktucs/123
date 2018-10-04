@@ -10,35 +10,34 @@ void analogport();
 
 
 Ticker timer1(tiker_interrupt, 50, 0, MICROS_MICROS);
-Ticker timer2(pulse_trig, 2000,0 , MICROS_MICROS);
+Ticker timer2(pulse_trig, 220,0 , MICROS_MICROS);
 Ticker timer3(analogport, 1000);
 
-void IRAM_ATTR tiker_interrupt(){
+void tiker_interrupt(){
     tic++;
 
-    if (tic > Dimmer && flag1 == 0){
+    if (tic > Dimmer){
         digitalWrite(27, 1);
-        //ledcWrite(1, 1);
         timer2.start();
         timer1.stop();
+        //гавно ёбаное
+
     }
 
 }
 
-void IRAM_ATTR zero_cross(){
+void zero_cross(){
     digitalWrite(27, 0);
-    //ledcWrite(1, 175);
     tic = 0;
     timer1.start();
-    //flag2++;
 }
 
-void IRAM_ATTR pulse_trig(){
+void pulse_trig(){
     digitalWrite(27, 0);
     timer2.stop();
 }
 
-void IRAM_ATTR analogport(){
+void analogport(){
     Dimmer = analogRead(4);
     Dimmer = map(Dimmer, 0, 4028, 0, 200);
     Serial.println(String(" ") + Dimmer + " " + tic +" " + flag2);
@@ -46,21 +45,16 @@ void IRAM_ATTR analogport(){
 void setup() {
     Serial.begin(115200);
     delay(500);
-    //pinMode(0, OUTPUT);
-    pinMode(4, INPUT);
+    pinMode(4, INPUT); //analog potentiometer pin
     pinMode(27, OUTPUT);
-    digitalWrite(27, 1);
+    digitalWrite(27, 1);// pin 27 triac gate pin 
     delay(300);
-    attachInterrupt(digitalPinToInterrupt(17), zero_cross, RISING);
+    attachInterrupt(17, zero_cross, RISING); //pin 17 zerocross 
     timer3.start();
-    while(1){
-    timer1.update();
-    timer2.update();
-    timer3.update();
-    yield();
-    }
 }
 
 void loop() {
-//delay(0);
+    timer1.update();
+    timer2.update();
+    timer3.update();
 }
