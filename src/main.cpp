@@ -1,3 +1,4 @@
+#define BLYNK_NO_BUILTIN
 #include <Arduino.h>
 #include "Ticker.h"
 
