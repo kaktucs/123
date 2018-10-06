@@ -54,15 +54,13 @@ void setup() {
     delay(300);
     attachInterrupt(digitalPinToInterrupt(17), zero_cross, RISING);
     timer3.start();
-    while(1){
-    timer1.update();
-    timer2.update();
-    timer3.update();
-    yield();
-    }
+    
 }
 
 void loop() {
-//delay(0);
+
+    timer1.update();
+    timer2.update();
+    timer3.update();
 }
 ///здесь были олени
